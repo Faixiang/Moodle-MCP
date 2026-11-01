@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-MCP" width="100%">
 
-# Moodle-Mcp
+# Moodle-MCP
 
 ### Moodle, которым ИИ-агенты действительно могут пользоваться
 
@@ -13,8 +13,8 @@
 <img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Без зависимостей">
-<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
-<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<a href="https://github.com/Faixiang/Moodle-MCP/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/Moodle-MCP?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.4.0-1f6feb" alt="Version 1.4.0">
 <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
@@ -38,7 +38,7 @@
 > standalone.
 
 
-> **Активно поддерживается.** Последний релиз **v1.3.0** (2026-10-27): тесты больше не «слепая зона» — `moodle_quiz_status` читает реальный статус попыток и баллы. Полный [список изменений](README.md#changelog-) в конце файла.
+> **Активно поддерживается.** Последний релиз **v1.4.0** (2026-11-02): два инструмента без токена — `moodle_setup_guide` и `moodle_config_status` — закрывают настройку и диагностику без посторонней помощи. Полный [список изменений](README.md#changelog-) в конце файла.
 
 ## Предпросмотр 🖥️
 
@@ -75,6 +75,8 @@ Moodle обеспечивает учебные платформы вузов п�
 
 | Инструмент | Назначение | Параметры |
 |---|---|---|
+| `moodle_setup_guide` | Пошаговое руководство по получению токена Moodle Web Service и подключению его к этому серверу (веб-интерфейс, оговорка про SSO, `config.json` и переменные окружения). Токен не нужен, работает всегда. Вызывать при первой настройке или после ошибки `TOKEN_MISSING`. | — |
+| `moodle_config_status` | Самопроверка локальной конфигурации: путь, наличие и разбор `config.json`, переменные `MOODLE_URL` и `MOODLE_TOKEN`, действующий URL, источник и длина токена (видны только первые 4 символа). Токен не нужен. | — |
 | `moodle_site_info` | Проверяет токен и возвращает название сайта, версию Moodle, текущего пользователя и доступные функции (диагностика). | — |
 | `moodle_list_courses` | Перечисляет все курсы с ID, кратким и полным названием. | — |
 | `moodle_recent_updates` | Новое и изменённое за последние N дней (задания, файлы, объявления), от новых к старым. | `days` (по умолчанию 7), `course_ids` |
@@ -104,7 +106,7 @@ Moodle требует персональный ключ доступа. Выбе
 
 1. Войдите в свой Moodle
 2. Фото профиля → *Настройки* → *Аккаунт* → *Безопасность* → *Управление ключами доступа*
-3. Нажмите «Создать», имя `moodle-mcp`, служба *Moodle mobile web service*
+3. Нажмите «Создать», имя `Moodle-MCP`, служба *Moodle mobile web service*
 4. Скопируйте созданный ключ
 
 **B. Скрипт через мобильную службу (только если на сайте остался локальный пароль)**
@@ -144,7 +146,7 @@ Claude Desktop / Cursor (`mcp.json`):
   "mcpServers": {
     "moodle": {
       "command": "python",
-      "args": ["/absolute/path/to/moodle-mcp/server.py"]
+      "args": ["/absolute/path/to/Moodle-MCP/server.py"]
     }
   }
 }
@@ -267,7 +269,7 @@ Issues и pull requests приветствуются. Весь сервер — 
 
 ## Обратная связь 📢
 
-Ошибки и предложения: [создайте issue](https://github.com/Faixiang/moodle-mcp/issues).
+Ошибки и предложения: [создайте issue](https://github.com/Faixiang/Moodle-MCP/issues).
 
 ## Лицензия 📝
 

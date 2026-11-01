@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-MCP" width="100%">
 
-# Moodle-Mcp
+# Moodle-MCP
 
 ### AI エージェントが本当に使える Moodle
 
@@ -13,8 +13,8 @@ Moodle の Web Service API から課題・締切・コース資料を直接取�
 <img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="依存ゼロ">
-<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
-<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<a href="https://github.com/Faixiang/Moodle-MCP/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/Moodle-MCP?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.4.0-1f6feb" alt="Version 1.4.0">
 <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
@@ -38,7 +38,7 @@ Moodle の Web Service API から課題・締切・コース資料を直接取�
 > standalone.
 
 
-> **継続的にメンテナンスしています。** 最新リリースは **v1.3.0**（2026-10-27）：クイズはもう盲点ではありません。`moodle_quiz_status` が実際の受験状況と得点を読み取ります。変更履歴は[文末](README.md#changelog-)にあります。
+> **継続的にメンテナンスしています。** 最新リリースは **v1.4.0**（2026-11-02）：トークン不要の `moodle_setup_guide` と `moodle_config_status` を追加し、初期設定とトラブルシュートを自己完結できます。変更履歴は[文末](README.md#changelog-)にあります。
 
 ## プレビュー 🖥️
 
@@ -75,6 +75,8 @@ pip 不要。node 不要。ブラウザ不要。python server.py だけ。
 
 | ツール | 役割 | 引数 |
 |---|---|---|
+| `moodle_setup_guide` | Moodle Web Service トークンの取得から本サーバーへの組み込みまでを手順化（ブラウザ UI、SSO の注意点、`config.json` と環境変数の両方式）。トークン不要で常に利用可能。初回設定時や `TOKEN_MISSING` 発生時に呼び出します。 | — |
+| `moodle_config_status` | ローカル設定の自己診断：`config.json` のパス／存在／解析結果、`MOODLE_URL`・`MOODLE_TOKEN` 環境変数、有効な URL、トークンの取得元と長さ（トークンは先頭 4 文字のみ表示）。トークン不要。 | — |
 | `moodle_site_info` | Token を検証し、サイト名・Moodle バージョン・現在のユーザー・利用可能な関数一覧を返します（診断用）。 | — |
 | `moodle_list_courses` | 受講中コースをすべて列挙。コース ID・略称・正式名称を含みます。 | — |
 | `moodle_recent_updates` | 直近 N 日間に追加・更新されたもの（課題・ファイル・お知らせ）を新しい順に返します。 | `days`（既定 7）、`course_ids` |
@@ -104,7 +106,7 @@ Moodle は個人用アクセスキーを必要とします。サイトの状況�
 
 1. Moodle にログイン
 2. プロフィール画像 → *設定* → *アカウント* → *セキュリティ* → *アクセスキーの管理*
-3. 「作成」を押し、名前を `moodle-mcp`、サービスを *Moodle mobile web service* に設定
+3. 「作成」を押し、名前を `Moodle-MCP`、サービスを *Moodle mobile web service* に設定
 4. 生成されたキーをコピー
 
 **B. スクリプト経由（サイトにローカルパスワードが残っている場合のみ）**
@@ -144,7 +146,7 @@ Claude Desktop / Cursor（`mcp.json`）：
   "mcpServers": {
     "moodle": {
       "command": "python",
-      "args": ["/absolute/path/to/moodle-mcp/server.py"]
+      "args": ["/absolute/path/to/Moodle-MCP/server.py"]
     }
   }
 }
@@ -267,7 +269,7 @@ issue と pull request を歓迎します。サーバーは 1 ファイルのみ
 
 ## フィードバック 📢
 
-バグ報告・機能要望は [issue を立ててください](https://github.com/Faixiang/moodle-mcp/issues)。
+バグ報告・機能要望は [issue を立ててください](https://github.com/Faixiang/Moodle-MCP/issues)。
 
 ## ライセンス 📝
 

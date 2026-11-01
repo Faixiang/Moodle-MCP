@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-MCP" width="100%">
 
-# Moodle-Mcp
+# Moodle-MCP
 
 ### Your Moodle, as tools an AI agent can actually use
 
@@ -13,8 +13,8 @@ Read assignments, deadlines and course files straight out of the Moodle Web Serv
 <img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Zero dependencies">
-<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
-<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<a href="https://github.com/Faixiang/Moodle-MCP/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/Moodle-MCP?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.4.0-1f6feb" alt="Version 1.4.0">
 <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
@@ -53,7 +53,7 @@ Read assignments, deadlines and course files straight out of the Moodle Web Serv
 
 Moodle powers a large share of universities and colleges worldwide, yet it had no general-purpose MCP server. Scraping it with a headless browser is slow, brittle and tends to trip WAFs — while Moodle itself already ships a stable, documented REST API.
 
-This project is the missing wrapper: **one zero-dependency Python file, six read-only tools**, working against any Moodle 3.x/4.x site with Web Services enabled.
+This project is the missing wrapper: **one zero-dependency Python file, ten read-only tools**, working against any Moodle 3.x/4.x site with Web Services enabled.
 
 ```text
 No pip install. No node. No browser. Just python server.py.
@@ -78,6 +78,8 @@ No pip install. No node. No browser. Just python server.py.
 
 | Tool | What it does | Arguments |
 |---|---|---|
+| `moodle_setup_guide` | Step-by-step guide for getting a Moodle web-service token and wiring it into this server (browser UI path, SSO caveat, `config.json` and environment-variable options). Needs no token, so it always works. Call it on first setup or after a `TOKEN_MISSING` error. | — |
+| `moodle_config_status` | Self-check of the local configuration: `config.json` path, existence and parse result, `MOODLE_URL` / `MOODLE_TOKEN` environment variables, effective URL, where the token came from and its length. The token itself is masked to the first 4 characters. Needs no token. | — |
 | `moodle_site_info` | Validate the token, return site name, Moodle version, current user and the list of web-service functions the account may call (diagnostics). | — |
 | `moodle_list_courses` | List every enrolled course with id, shortname and fullname. | — |
 | `moodle_recent_updates` | Content added or updated in the last N days (assignments, files, announcements), newest first. | `days` (default 7), `course_ids` |
@@ -109,7 +111,7 @@ Moodle needs a personal access token. Pick whichever works for your site:
 
 1. Log in to your Moodle site
 2. Avatar → *Preferences* → *Account* → *Security* → *Manage access keys*
-3. *Create*, name it `moodle-mcp`, service = *Moodle mobile web service*
+3. *Create*, name it `Moodle-MCP`, service = *Moodle mobile web service*
 4. Copy the token
 
 **B. Mobile-app service via script (only if your site has local passwords)**
@@ -149,7 +151,7 @@ Claude Desktop / Cursor (`mcp.json`):
   "mcpServers": {
     "moodle": {
       "command": "python",
-      "args": ["/absolute/path/to/moodle-mcp/server.py"]
+      "args": ["/absolute/path/to/Moodle-MCP/server.py"]
     }
   }
 }
@@ -263,6 +265,7 @@ Output is UTF-8. In legacy consoles run `chcp 65001` first, or use Windows Termi
 
 | Version | Date | Highlights |
 |---|---|---|
+| **1.4.0** | 2026-11-02 | Two token-free tools: `moodle_setup_guide` (step-by-step token and wiring instructions) and `moodle_config_status` (config self-check with the token masked). Every `TOKEN_MISSING` error now hands over to them instead of dead-ending. |
 | **1.3.0** | 2026-10-27 | New `moodle_quiz_status` — attempt state, best score and time windows read from `mod_quiz_get_user_attempts`. The quiz blind spot is closed; `moodle_weekly_digest` now points to it. |
 | **1.2.0** | 2026-10-27 | Week numbering is taken from section titles only. Blocks that carry no week number (`Online Judge Questions`, `Project Submission`) keep their own names instead of being silently renumbered. |
 | **1.1.0** | 2026-10-27 | New `moodle_download_week` — pulls a whole week's slides and assignment attachments, verifies size, and skips files that are already on disk. |
@@ -288,7 +291,7 @@ Issues and pull requests are welcome. The whole server is one file — read `ser
 
 ## Feedback 📢
 
-Bugs and feature requests: [open an issue](https://github.com/Faixiang/moodle-mcp/issues).
+Bugs and feature requests: [open an issue](https://github.com/Faixiang/Moodle-MCP/issues).
 
 ## License 📝
 

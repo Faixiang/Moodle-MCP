@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-MCP" width="100%">
 
-# Moodle-Mcp
+# Moodle-MCP
 
 ### 讓 AI Agent 真正能用的 Moodle
 
@@ -13,8 +13,8 @@
 <img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="零依賴">
-<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
-<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<a href="https://github.com/Faixiang/Moodle-MCP/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/Moodle-MCP?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.4.0-1f6feb" alt="Version 1.4.0">
 <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
@@ -37,7 +37,7 @@
 > 專業講述並劃分重點等級。它以 git submodule 形式掛在 [`skill/moodle-course-watch/`](skill/moodle-course-watch/)（複製時需加 `--recurse-submodules`），
 > 也有獨立倉庫供只想裝 skill 的人單獨複製。
 
-> **持續維護中。** 最新版本 **v1.3.0**（2026-10-27）：quiz 不再是盲區，`moodle_quiz_status` 可直接讀取真實作答狀態與成績。完整[更新記錄](README.md#changelog-)見文末。
+> **持續維護中。** 最新版本 **v1.4.0**（2026-11-02）：新增兩個免 Token 工具 `moodle_setup_guide` 與 `moodle_config_status`，設定與排障可自助完成。完整[更新記錄](README.md#changelog-)見文末。
 
 ## 介面預覽 🖥️
 
@@ -74,6 +74,8 @@ Moodle 支撐着全球大量院校的教學平台，卻一直沒有通用的 MCP
 
 | 工具 | 作用 | 參數 |
 |---|---|---|
+| `moodle_setup_guide` | 分步引導：取得 Moodle Web Service Token 並接入本服務（瀏覽器路徑、SSO 注意事項、`config.json` 與環境變數兩種方式）。無需 Token，始終可用。首次設定或遇到 `TOKEN_MISSING` 時呼叫。 | — |
+| `moodle_config_status` | 本機設定自檢：`config.json` 路徑/是否存在/解析結果、`MOODLE_URL` 與 `MOODLE_TOKEN` 環境變數、生效 URL、Token 來源與長度，Token 僅顯示前 4 碼。無需 Token。 | — |
 | `moodle_site_info` | 驗證 Token，回傳站點名稱、Moodle 版本、目前使用者與該帳號可呼叫的函數清單（診斷用）。 | — |
 | `moodle_list_courses` | 列出所有已選課程，含課程 ID、簡稱、全名。 | — |
 | `moodle_recent_updates` | 最近 N 天內新增或更新的內容（作業、檔案、公告），按時間倒序。 | `days`（預設 7）、`course_ids` |
@@ -103,7 +105,7 @@ Moodle 需要個人存取金鑰。按站點情況任選一種：
 
 1. 登入你的 Moodle 站點
 2. 頭像 → *偏好設定* → *帳戶* → *安全性* → *管理存取金鑰*
-3. 點「建立」，名稱填 `moodle-mcp`，服務選 *Moodle mobile web service*
+3. 點「建立」，名稱填 `Moodle-MCP`，服務選 *Moodle mobile web service*
 4. 複製產生的金鑰
 
 **B. 以腳本走行動服務（僅當站點保留本地密碼時可用）**
@@ -143,7 +145,7 @@ Claude Desktop / Cursor（`mcp.json`）：
   "mcpServers": {
     "moodle": {
       "command": "python",
-      "args": ["/absolute/path/to/moodle-mcp/server.py"]
+      "args": ["/absolute/path/to/Moodle-MCP/server.py"]
     }
   }
 }
@@ -266,7 +268,7 @@ Agent 呼叫 `moodle_weekly_digest`，即得一份可讀簡報：
 
 ## 回饋建議 📢
 
-Bug 與功能建議：[提交 issue](https://github.com/Faixiang/moodle-mcp/issues)。
+Bug 與功能建議：[提交 issue](https://github.com/Faixiang/Moodle-MCP/issues)。
 
 ## 授權 📝
 

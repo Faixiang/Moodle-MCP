@@ -32,7 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(HERE, "config.json")
 PROTOCOL_VERSION = "2024-11-05"
 SERVER_NAME = "moodle-mcp"
-SERVER_VERSION = "1.3.0"
+SERVER_VERSION = "1.4.0"
 
 
 def log(msg):
@@ -63,6 +63,102 @@ def load_config():
     return cfg
 
 
+PLACEHOLDER_TOKENS = ("", "<wstoken>", "wstoken", "your-token", "YOUR_TOKEN", "none", "null")
+
+SETUP_GUIDE = """MOODLE ACCESS TOKEN — SETUP GUIDE
+1) Sign in to your Moodle site in a browser.
+2) Top-right avatar -> Preferences.
+3) Account -> Security -> Manage access keys.
+4) Click Create, choose the service "Moodle mobile web service", then confirm.
+5) Copy the generated token (32 characters) right away - it is shown only once.
+Note: SSO / OIDC-only accounts must use this Web UI route; get_token.py returns
+invalidlogin for accounts that have no local password.
+Then write config.json next to server.py:
+    {"url": "https://your-moodle.example.com", "token": "<wstoken>"}
+Or set the environment variables MOODLE_URL / MOODLE_TOKEN.
+Finally restart the MCP server and call moodle_config_status to verify.
+
+--- 中文 ---
+
+MOODLE 访问令牌 — 配置引导
+1) 浏览器登录你的 Moodle 站点。
+2) 点击右上角头像 -> 偏好设定（Preferences）。
+3) 账号 -> 安全性（Security）-> 管理存取金钥（Manage access keys）。
+4) 点「建立 / Create」，服务选「Moodle mobile web service」，确认新增。
+5) 立即复制生成的 token（32 位），该值只显示一次。
+注意：纯 SSO / OIDC 账号必须走上述网页方式；没有本地密码的账号用 get_token.py
+会返回 invalidlogin。
+然后在 server.py 同目录写入 config.json：
+    {"url": "https://your-moodle.example.com", "token": "<wstoken>"}
+或设置环境变量 MOODLE_URL / MOODLE_TOKEN。
+最后重启 MCP 服务，并调用 moodle_config_status 自检。"""
+
+
+def mask_token(token):
+    if not token:
+        return "（空）"
+    if len(token) <= 6:
+        return token[:1] + "****"
+    return token[:4] + "*" * (len(token) - 4)
+
+
+def token_is_missing(token):
+    return (token or "").strip().lower() in PLACEHOLDER_TOKENS
+
+
+def config_report():
+    url_env = os.environ.get("MOODLE_URL", "").strip()
+    token_env = os.environ.get("MOODLE_TOKEN", "").strip()
+    exists = os.path.exists(CONFIG_PATH)
+    parsed = False
+    parse_error = ""
+    disk_url = ""
+    disk_token = ""
+    if exists:
+        try:
+            with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+                disk = json.load(f)
+            parsed = True
+            disk_url = str(disk.get("url") or "").strip()
+            disk_token = str(disk.get("token") or "").strip()
+        except Exception as exc:
+            parse_error = str(exc)
+
+    cfg = load_config()
+    token = (cfg.get("token") or "").strip()
+    if disk_token and not token_is_missing(disk_token):
+        source = "config.json"
+    elif token_env and not token_is_missing(token_env):
+        source = "环境变量 MOODLE_TOKEN"
+    elif token:
+        source = "已配置但为占位符"
+    else:
+        source = "未配置"
+
+    lines = [
+        "Moodle MCP 配置自检 / Configuration self-check",
+        "",
+        "配置文件路径: %s" % CONFIG_PATH,
+        "配置文件存在: %s" % ("是" if exists else "否"),
+        "配置文件可解析: %s%s" % ("是" if parsed else "否", ("（错误：%s）" % parse_error) if parse_error else ""),
+        "环境变量 MOODLE_URL: %s" % ("已设置" if url_env else "未设置"),
+        "环境变量 MOODLE_TOKEN: %s" % ("已设置" if token_env else "未设置"),
+        "生效 URL: %s" % (cfg.get("url") or "（空）"),
+        "Token 来源: %s" % source,
+        "Token 是否占位符: %s" % ("是" if token_is_missing(token) else "否"),
+        "Token 长度: %d%s" % (len(token), "" if len(token) == 32 else "（异常，Moodle wstoken 通常为 32 位）"),
+        "Token 预览: %s" % mask_token(token),
+        "",
+    ]
+    if token_is_missing(token):
+        lines.append("结论: 尚未配置可用 Token。请调用 moodle_setup_guide 获取分步引导并转述给用户。")
+        lines.append("Result: no usable token. Call moodle_setup_guide and walk the user through it.")
+    else:
+        lines.append("结论: Token 已配置，可调用 moodle_site_info 验证其有效性。")
+        lines.append("Result: token present. Call moodle_site_info to confirm it is valid.")
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------- HTTP
 
 def moodle_call(function, params=None, cfg=None):
@@ -70,8 +166,11 @@ def moodle_call(function, params=None, cfg=None):
     token = cfg.get("token") or ""
     if not token:
         raise MoodleError(
+            "[TOKEN_MISSING] error_code=TOKEN_MISSING next_tool=moodle_setup_guide\n"
             "未配置 Token。请编辑 %s 写入 {\"url\":\"...\",\"token\":\"<wstoken>\"}，"
-            "或设置环境变量 MOODLE_TOKEN。获取方式见 README。" % CONFIG_PATH
+            "或设置环境变量 MOODLE_TOKEN。获取方式见 README。\n"
+            "Agent 请立即调用 moodle_setup_guide 获取引导并逐步转述给用户，"
+            "配置完成后调用 moodle_config_status 自检。" % CONFIG_PATH
         )
     endpoint = cfg["url"].rstrip("/") + "/webservice/rest/server.php"
 
@@ -555,6 +654,16 @@ def render_digest(days=7, ahead_days=14, cfg=None):
 
 TOOLS = [
     {
+        "name": "moodle_setup_guide",
+        "description": "Step-by-step guide for obtaining a Moodle web-service access token and wiring it into this server (browser UI path, SSO caveat, config.json and environment-variable options). Needs no token, so it always works. Call this whenever another tool returns TOKEN_MISSING, or when the user is setting the server up for the first time, and relay the steps to the user one by one.",
+        "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
+    },
+    {
+        "name": "moodle_config_status",
+        "description": "Self-check of the local configuration: config.json path/existence/parse result, MOODLE_URL and MOODLE_TOKEN environment variables, effective URL, where the token came from, whether it is still a placeholder, and its length. The token is masked to the first 4 characters. Needs no token. Call it before setup troubleshooting, or when another tool returns TOKEN_MISSING, then follow its verdict (usually: call moodle_setup_guide).",
+        "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
+    },
+    {
         "name": "moodle_site_info",
         "description": "Validate the Moodle token and return site name, version, current user and the web-service functions the account may call (diagnostics).",
         "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
@@ -639,6 +748,12 @@ TOOL_MAP = {t["name"]: t for t in TOOLS}
 def call_tool(name, args):
     cfg = load_config()
     args = args or {}
+
+    if name == "moodle_setup_guide":
+        return SETUP_GUIDE
+
+    if name == "moodle_config_status":
+        return config_report()
 
     if name == "moodle_site_info":
         info = get_site_info(cfg=cfg)
@@ -842,6 +957,10 @@ def handle(msg):
 
 def main():
     log("启动，配置：%s" % CONFIG_PATH)
+    if token_is_missing(load_config().get("token")):
+        log("未检测到可用 Token。调用 moodle_config_status 查看配置状态，"
+            "调用 moodle_setup_guide 获取 Token 的分步引导。"
+            " No usable token: call moodle_config_status, then moodle_setup_guide.")
     for line in sys.stdin:
         line = line.strip()
         if not line:

@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-MCP" width="100%">
 
-# Moodle-Mcp
+# Moodle-MCP
 
 ### AI 에이전트가 실제로 쓸 수 있는 Moodle
 
@@ -13,8 +13,8 @@ Moodle Web Service API에서 과제, 마감일, 강의 자료를 직접 가져�
 <img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="의존성 없음">
-<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
-<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<a href="https://github.com/Faixiang/Moodle-MCP/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/Moodle-MCP?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.4.0-1f6feb" alt="Version 1.4.0">
 <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
@@ -38,7 +38,7 @@ Moodle Web Service API에서 과제, 마감일, 강의 자료를 직접 가져�
 > standalone.
 
 
-> **지속적으로 유지보수 중입니다.** 최신 릴리스 **v1.3.0**(2026-10-27): 퀴즈는 더 이상 사각지대가 아니며 `moodle_quiz_status`가 실제 응시 상태와 점수를 읽어옵니다. 전체 변경 내역은 [문서 끝](README.md#changelog-)에 있습니다.
+> **지속적으로 유지보수 중입니다.** 최신 릴리스 **v1.4.0**(2026-11-02): 토큰이 필요 없는 `moodle_setup_guide`와 `moodle_config_status`를 추가해 초기 설정과 문제 해결을 스스로 끝낼 수 있습니다. 전체 변경 내역은 [문서 끝](README.md#changelog-)에 있습니다.
 
 ## 미리보기 🖥️
 
@@ -75,6 +75,8 @@ pip 설치 없음. node 없음. 브라우저 없음. 그냥 python server.py.
 
 | 도구 | 역할 | 인자 |
 |---|---|---|
+| `moodle_setup_guide` | Moodle 웹 서비스 토큰 발급부터 이 서버 연결까지 단계별 안내(브라우저 UI, SSO 주의점, `config.json` 및 환경 변수 방식). 토큰이 필요 없어 항상 동작합니다. 최초 설정 시 또는 `TOKEN_MISSING` 발생 시 호출합니다. | — |
+| `moodle_config_status` | 로컬 설정 자가 점검: `config.json` 경로/존재/파싱 결과, `MOODLE_URL`·`MOODLE_TOKEN` 환경 변수, 적용 URL, 토큰 출처와 길이(토큰은 앞 4자리만 표시). 토큰 불필요. | — |
 | `moodle_site_info` | Token을 검증하고 사이트 이름, Moodle 버전, 현재 사용자, 사용 가능한 함수 목록을 반환합니다(진단용). | — |
 | `moodle_list_courses` | 수강 중인 모든 강좌를 나열합니다. 강좌 ID, 약칭, 전체 이름 포함. | — |
 | `moodle_recent_updates` | 최근 N일 내 추가·변경된 항목(과제, 파일, 공지)을 최신순으로 반환합니다. | `days`(기본 7), `course_ids` |
@@ -104,7 +106,7 @@ Moodle은 개인 액세스 키가 필요합니다. 사이트 상황에 따라 �
 
 1. Moodle 사이트에 로그인
 2. 프로필 사진 → *환경설정* → *계정* → *보안* → *액세스 키 관리*
-3. «만들기»를 누르고 이름에 `moodle-mcp`, 서비스에 *Moodle mobile web service* 선택
+3. «만들기»를 누르고 이름에 `Moodle-MCP`, 서비스에 *Moodle mobile web service* 선택
 4. 생성된 키를 복사
 
 **B. 스크립트로 모바일 서비스 사용(사이트에 로컬 비밀번호가 남아 있을 때만)**
@@ -144,7 +146,7 @@ Claude Desktop / Cursor(`mcp.json`):
   "mcpServers": {
     "moodle": {
       "command": "python",
-      "args": ["/absolute/path/to/moodle-mcp/server.py"]
+      "args": ["/absolute/path/to/Moodle-MCP/server.py"]
     }
   }
 }
@@ -267,7 +269,7 @@ Claude Desktop / Cursor(`mcp.json`):
 
 ## 피드백 📢
 
-버그와 기능 제안은 [이슈를 남겨 주세요](https://github.com/Faixiang/moodle-mcp/issues).
+버그와 기능 제안은 [이슈를 남겨 주세요](https://github.com/Faixiang/Moodle-MCP/issues).
 
 ## 라이선스 📝
 

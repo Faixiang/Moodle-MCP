@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-MCP" width="100%">
 
-# Moodle-Mcp
+# Moodle-MCP
 
 ### Das Moodle, das KI-Agenten wirklich nutzen können
 
@@ -13,8 +13,8 @@ Aufgaben, Fristen und Kursdateien direkt über die Moodle-Web-Service-API lesen.
 <img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Keine Abhängigkeiten">
-<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
-<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<a href="https://github.com/Faixiang/Moodle-MCP/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/Moodle-MCP?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.4.0-1f6feb" alt="Version 1.4.0">
 <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
@@ -38,7 +38,7 @@ Aufgaben, Fristen und Kursdateien direkt über die Moodle-Web-Service-API lesen.
 > standalone.
 
 
-> **Aktiv gepflegt.** Letzte Version **v1.3.0** (2026-10-27): Quiz sind kein blinder Fleck mehr — `moodle_quiz_status` liest echten Versuchsstatus und Punkte. Vollständiges [Änderungsprotokoll](README.md#changelog-) am Dateiende.
+> **Aktiv gepflegt.** Letzte Version **v1.4.0** (2026-11-02): Zwei Tools ohne Token, `moodle_setup_guide` und `moodle_config_status`, erledigen Einrichtung und Diagnose ohne fremde Hilfe. Vollständiges [Änderungsprotokoll](README.md#changelog-) am Dateiende.
 
 ## Vorschau 🖥️
 
@@ -75,6 +75,8 @@ Kein pip install. Kein node. Kein Browser. Nur python server.py.
 
 | Werkzeug | Zweck | Parameter |
 |---|---|---|
+| `moodle_setup_guide` | Schritt-für-Schritt-Anleitung zum Moodle-Web-Service-Token und dessen Einbindung in diesen Server (Web-Oberfläche, SSO-Hinweis, `config.json` und Umgebungsvariablen). Kein Token nötig, funktioniert immer. Aufrufen bei der Ersteinrichtung oder nach einem `TOKEN_MISSING`-Fehler. | — |
+| `moodle_config_status` | Selbsttest der lokalen Konfiguration: Pfad, Existenz und Parsing von `config.json`, Umgebungsvariablen `MOODLE_URL` und `MOODLE_TOKEN`, effektive URL, Herkunft und Länge des Tokens (nur die ersten 4 Zeichen werden angezeigt). Kein Token nötig. | — |
 | `moodle_site_info` | Prüft den Token und liefert Site-Name, Moodle-Version, aktuellen Nutzer und die verfügbaren Funktionen (Diagnose). | — |
 | `moodle_list_courses` | Listet alle belegten Kurse mit ID, Kurzname und vollständigem Namen. | — |
 | `moodle_recent_updates` | Neue oder geänderte Inhalte der letzten N Tage (Aufgaben, Dateien, Ankündigungen), neueste zuerst. | `days` (Standard 7), `course_ids` |
@@ -104,7 +106,7 @@ Moodle benötigt einen persönlichen Zugangsschlüssel. Wählen Sie je nach Site
 
 1. Bei Moodle anmelden
 2. Profilbild → *Einstellungen* → *Konto* → *Sicherheit* → *Zugangsschlüssel verwalten*
-3. „Erstellen“ wählen, Name `moodle-mcp`, Dienst *Moodle mobile web service*
+3. „Erstellen“ wählen, Name `Moodle-MCP`, Dienst *Moodle mobile web service*
 4. Erzeugten Schlüssel kopieren
 
 **B. Per Skript über den Mobile-Dienst (nur wenn die Site ein lokales Passwort führt)**
@@ -144,7 +146,7 @@ Claude Desktop / Cursor (`mcp.json`):
   "mcpServers": {
     "moodle": {
       "command": "python",
-      "args": ["/absolute/path/to/moodle-mcp/server.py"]
+      "args": ["/absolute/path/to/Moodle-MCP/server.py"]
     }
   }
 }
@@ -267,7 +269,7 @@ Issues und Pull Requests sind willkommen. Der Server besteht aus einer Datei; `s
 
 ## Feedback 📢
 
-Fehler und Wünsche: [Issue eröffnen](https://github.com/Faixiang/moodle-mcp/issues).
+Fehler und Wünsche: [Issue eröffnen](https://github.com/Faixiang/Moodle-MCP/issues).
 
 ## Lizenz 📝
 

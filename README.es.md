@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Moodle-Mcp" width="100%">
+<img src="docs/banner.svg" alt="Moodle-MCP" width="100%">
 
-# Moodle-Mcp
+# Moodle-MCP
 
 ### La Moodle que los agentes de IA sí pueden usar
 
@@ -13,8 +13,8 @@ Lee tareas, fechas de entrega y archivos del curso directamente de la Web Servic
 <img src="https://img.shields.io/badge/MCP-2024--11--05-8A2BE2" alt="MCP 2024-11-05">
 <img src="https://img.shields.io/badge/Moodle-3.x%20%7C%204.x-F98012?logo=moodle&logoColor=white" alt="Moodle 3.x / 4.x">
 <img src="https://img.shields.io/badge/dependencies-0-success" alt="Sin dependencias">
-<a href="https://github.com/Faixiang/moodle-mcp/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/moodle-mcp?style=social" alt="GitHub stars"></a>
-<img src="https://img.shields.io/badge/version-1.3.0-1f6feb" alt="Version 1.3.0">
+<a href="https://github.com/Faixiang/Moodle-MCP/stargazers"><img src="https://img.shields.io/github/stars/Faixiang/Moodle-MCP?style=social" alt="GitHub stars"></a>
+<img src="https://img.shields.io/badge/version-1.4.0-1f6feb" alt="Version 1.4.0">
 <img src="https://img.shields.io/badge/status-actively%20maintained-brightgreen" alt="Actively maintained">
 
 <p>
@@ -38,7 +38,7 @@ Lee tareas, fechas de entrega y archivos del curso directamente de la Web Servic
 > standalone.
 
 
-> **En mantenimiento activo.** Última versión **v1.3.0** (2026-10-27): los cuestionarios ya no son un punto ciego — `moodle_quiz_status` lee el estado real de los intentos y las notas. Historial completo en el [registro de cambios](README.md#changelog-).
+> **En mantenimiento activo.** Última versión **v1.4.0** (2026-11-02): dos herramientas sin token, `moodle_setup_guide` y `moodle_config_status`, permiten configurar y diagnosticar sin ayuda externa. Historial completo en el [registro de cambios](README.md#changelog-).
 
 ## Vista previa 🖥️
 
@@ -75,6 +75,8 @@ Sin pip install. Sin node. Sin navegador. Solo python server.py.
 
 | Herramienta | Función | Parámetros |
 |---|---|---|
+| `moodle_setup_guide` | Guía paso a paso para obtener el token de Moodle Web Service e integrarlo en este servidor (interfaz web, advertencia sobre SSO, `config.json` y variables de entorno). No necesita token, siempre funciona. Llamar en la primera configuración o tras un error `TOKEN_MISSING`. | — |
+| `moodle_config_status` | Autodiagnóstico de la configuración local: ruta, existencia y análisis de `config.json`, variables `MOODLE_URL` y `MOODLE_TOKEN`, URL efectiva, origen y longitud del token (solo se muestran los 4 primeros caracteres). No necesita token. | — |
 | `moodle_site_info` | Valida el token y devuelve nombre del sitio, versión de Moodle, usuario actual y funciones disponibles para la cuenta (diagnóstico). | — |
 | `moodle_list_courses` | Lista todos los cursos matriculados con ID, nombre corto y nombre completo. | — |
 | `moodle_recent_updates` | Contenido nuevo o modificado en los últimos N días (tareas, archivos, avisos), del más reciente al más antiguo. | `days` (7 por defecto), `course_ids` |
@@ -104,7 +106,7 @@ Moodle requiere una clave de acceso personal. Elige según tu sitio:
 
 1. Inicia sesión en tu Moodle
 2. Foto de perfil → *Preferencias* → *Cuenta* → *Seguridad* → *Gestionar claves de acceso*
-3. Pulsa «Crear», nombre `moodle-mcp`, servicio *Moodle mobile web service*
+3. Pulsa «Crear», nombre `Moodle-MCP`, servicio *Moodle mobile web service*
 4. Copia la clave generada
 
 **B. Mediante script con el servicio móvil (solo si el sitio conserva contraseña local)**
@@ -144,7 +146,7 @@ Claude Desktop / Cursor (`mcp.json`):
   "mcpServers": {
     "moodle": {
       "command": "python",
-      "args": ["/absolute/path/to/moodle-mcp/server.py"]
+      "args": ["/absolute/path/to/Moodle-MCP/server.py"]
     }
   }
 }
@@ -267,7 +269,7 @@ Issues y pull requests son bienvenidos. Todo el servidor es un archivo: leer `se
 
 ## Comentarios 📢
 
-Errores y sugerencias: [abre un issue](https://github.com/Faixiang/moodle-mcp/issues).
+Errores y sugerencias: [abre un issue](https://github.com/Faixiang/Moodle-MCP/issues).
 
 ## Licencia 📝
 
